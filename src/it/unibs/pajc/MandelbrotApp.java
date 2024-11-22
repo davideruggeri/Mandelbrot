@@ -2,7 +2,7 @@ package it.unibs.pajc;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 
 public class MandelbrotApp {
@@ -33,12 +33,16 @@ public class MandelbrotApp {
     }
 
     private void updateModel(ChangeEvent e) {
-        if (pnlMandelbrot == null) {
+        if (pnlMandelbrot == null)
             return;
-        }
         double data[][] = model.getData();
-        pnlMandelbrot.setData(data);
 
+        Runnable task = () -> pnlMandelbrot.setData(data);
+        if (EventQueue.isDispatchThread()) {
+            task.run();
+        } else {
+            SwingUtilities.invokeLater(task);
+        }
     }
 
     private void initialize() {

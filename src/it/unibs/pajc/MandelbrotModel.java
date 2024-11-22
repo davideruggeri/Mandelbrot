@@ -10,7 +10,7 @@ public class MandelbrotModel extends BaseModel {
     }
 
     public void eval(Complex min, Complex max, int res){
-        data = new double[res][res];
+        double[][] data = new double[res][res];
         double dre = Math.abs(min.re - max.re) / res;
         double dim = Math.abs(min.im - max.im) / res;
 
@@ -20,8 +20,11 @@ public class MandelbrotModel extends BaseModel {
                 data[i][j] = fMandelBrot(c);
             }
         }
+        synchronized (this) {
+            this.data = data;
+            fireValueChanged(new ChangeEvent(this));
+        }
 
-        fireValueChanged(new ChangeEvent(this));
     }
 
     private static double fMandelBrot(Complex c){

@@ -65,7 +65,7 @@ public class PnlMandelbrot extends JPanel implements MouseListener, MouseMotionL
 
     public void setViewport(Rectangle2D.Double newViewport) {
         this.viewport = newViewport;
-        cntrl.update(newViewport, 250);
+        cntrl.update(newViewport, 1500);
 
     }
 

@@ -16,15 +16,18 @@ public class MandelbrotModel extends BaseModel {
 
         for(int i=0; i<res; i++){
             for(int j=0; j<res; j++){
+                if(Thread.interrupted()) return;
+
                 Complex c = new Complex(min.re + j*dre, min.im + i*dim);
                 data[i][j] = fMandelBrot(c);
             }
         }
         synchronized (this) {
-            this.data = data;
-            fireValueChanged(new ChangeEvent(this));
+            if (!Thread.interrupted()) {
+                this.data = data;
+                fireValueChanged(new ChangeEvent(this));
+            }
         }
-
     }
 
     private static double fMandelBrot(Complex c){
